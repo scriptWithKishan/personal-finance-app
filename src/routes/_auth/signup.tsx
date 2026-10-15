@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { createFileRoute, Link } from '@tanstack/react-router'
 import { useForm } from '@tanstack/react-form'
 
@@ -14,6 +15,8 @@ export const Route = createFileRoute('/_auth/signup')({
 
 
 function RouteComponent() {
+  const [serverError, setServerError] = useState<string | null>(null);
+
   const form = useForm({
     defaultValues: {
       name: '',
@@ -28,11 +31,15 @@ function RouteComponent() {
       }),
     },
     onSubmit: async ({ value }) => {
+      setServerError(null);
       const response = await signupFn({ data: value });
-      console.log(response);
+      if (response?.error) {
+        setServerError(response.error);
+        return;
+      }
       form.reset();
     }
-  })  
+  })
 
   return (
     <Card className="w-100">
@@ -108,6 +115,9 @@ function RouteComponent() {
             )}
           />
           <Button type="submit">Sign up</Button>
+          {serverError && (
+            <p className="text-red-500 text-sm text-center">{String(serverError)}</p>
+          )}
         </form>
       </CardContent>
     </Card>

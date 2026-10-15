@@ -27,9 +27,7 @@ export function AppSidebar() {
   const redirectUrl = location.pathname.slice(1);
 
   const { user } = Route.useRouteContext();
-
-  console.log(user)
-
+  
   const handleLogout = async () => {
     await logoutFn()
     await router.navigate({ to: `/login?redirect=%2F${redirectUrl}` })

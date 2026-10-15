@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { createFileRoute, Link, useRouter } from '@tanstack/react-router'
 import { useForm } from '@tanstack/react-form'
 
@@ -21,6 +22,8 @@ function RouteComponent() {
   const { redirect } = Route.useSearch();
   const destination = redirect || "/";
 
+  const [serverError, setServerError] = useState<string | null>(null);
+
   const router = useRouter();
   const form = useForm({  
     defaultValues: {
@@ -30,13 +33,14 @@ function RouteComponent() {
     validators: {
       onSubmit: z.object({
         email: z.string().email({ message: "Invalid Email"}),
-        password: z.string().min(8, { message: "Password must be at least 8 characters" }),
+        password: z.string({ message: "Invalid Password Input!" }),
       }),
     },
     onSubmit: async ({ value }) => {
+      setServerError(null);
       const response = await loginFn({ data: value });
       if (response?.error) {
-        console.error(response.error);
+        setServerError(response.error);
         return;
       }
       await router.navigate({ to: destination });
@@ -99,7 +103,10 @@ function RouteComponent() {
               </Field>
             )}
           />
-          <Button type="submit">Sign up</Button>
+          <Button type="submit">Sign in</Button>
+          {serverError && (
+            <p className="text-red-500 text-sm text-center">{String(serverError)}</p>
+          )}
         </form>
       </CardContent>
     </Card>
