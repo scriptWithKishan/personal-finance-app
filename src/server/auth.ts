@@ -1,8 +1,37 @@
-import { createServerFn } from "@tanstack/react-start";
+import { createMiddleware, createServerFn } from "@tanstack/react-start";
 import { prisma } from "#/db";
 
 import bcrypt from "bcryptjs";
 import { useAppSession } from "#/utils/session";
+
+export const authMiddleware = createMiddleware().server(async ({ next }) => {
+  const session = await useAppSession();
+  const email = session.data.email;
+
+  if (!email) {
+    throw new Error("Unauthorized");
+  }
+
+  const user = await prisma.user.findUnique({
+    where: {
+      email,
+    },
+  });
+
+  if (!user) {
+    throw new Error("Unauthorized");
+  }
+
+  return next({
+    context: {
+      user: {
+        id: user.id,
+        email: user.email,
+        name: user.name,
+      },
+    },
+  });
+});
 
 export const signupFn = createServerFn({ method: "POST" })
   .validator((data: { name: string, email: string, password: string }) => data)
