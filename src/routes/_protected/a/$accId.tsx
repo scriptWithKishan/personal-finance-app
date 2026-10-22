@@ -1,3 +1,5 @@
+import AddTransactionButton from '#/components/add-transaction-button';
+import { Button } from '#/components/ui/button';
 import { getTransactionOfAccountFn } from '#/server/transaction';
 import { createFileRoute } from '@tanstack/react-router'
 
@@ -22,6 +24,12 @@ function RouteComponent() {
         <h2 className='text-xl font-bold'>{accountData?.name} : <span className='font-semibold'>{accountData?.type}</span></h2>
         <p className='font-semibold'>Balance</p>
         <h2 className='text-4xl font-extrabold'>{accountData?.balance}</h2>
+      </div>
+      <div className='mt-4 px-20'>
+        <div className='flex justify-between items-center'>
+          <h2 className='text-xl font-bold'>Transactions</h2>
+          <AddTransactionButton />
+        </div>
       </div>
     </div>
   )

@@ -2,6 +2,7 @@ import { createServerFn } from "@tanstack/react-start";
 import { authMiddleware } from "./auth";
 import { prisma } from "#/db";
 import z from "zod";
+import type { TransactionType } from "#/generated/prisma/enums";
 
 export const getTransactionOfAccountFn = createServerFn({ method: 'GET' })
   .middleware([authMiddleware])
@@ -38,3 +39,8 @@ export const getTransactionOfAccountFn = createServerFn({ method: 'GET' })
       })),
     }
   })
+
+export const addTransactionFn = createServerFn({ method: 'POST' })
+  .middleware([authMiddleware])
+  .validator((data: { name: string, amount: number, description: string, accountId: string, category: string, type: TransactionType }) => data)
+  .handler()
