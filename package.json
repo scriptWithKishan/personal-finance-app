@@ -25,6 +25,7 @@
     "@prisma/adapter-pg": "^7.4.2",
     "@prisma/client": "^7.4.2",
     "@tailwindcss/vite": "^4.1.18",
+    "@tanstack/charts": "^1.1.0",
     "@tanstack/match-sorter-utils": "9.1.2",
     "@tanstack/react-devtools": "0.10.13",
     "@tanstack/react-form": "1.33.5",

@@ -1,4 +1,4 @@
-import type { ReactElement } from "react"
+import type { ReactNode } from "react"
 import { Button } from "./ui/button"
 import { X } from "lucide-react"
 import { cn } from "#/lib/utils"
@@ -7,7 +7,7 @@ interface ModalProps {
   isOpen: boolean
   onClose: () => void 
   title: string 
-  children: ReactElement
+  children: ReactNode
   className?: string
 }
 

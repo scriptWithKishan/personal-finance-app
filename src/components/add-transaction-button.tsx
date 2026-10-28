@@ -2,11 +2,17 @@ import { Button } from '#/components/ui/button'
 import { useState } from 'react'
 import Modal from './modal'
 import { useForm } from '@tanstack/react-form'
+import { useRouter } from '@tanstack/react-router'
 import z from 'zod'
 import { Field, FieldLabel } from './ui/field'
 import { Input } from './ui/input'
 import { Textarea } from './ui/textarea'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select'
+import { addTransactionFn } from '#/server/transaction'
+
+interface AddTransactionButtonProps {
+  accountId?: string
+}
 
 const TRANSACTION_TYPES = ['Credit', 'Debit'] as const
 export type TransactionType = (typeof TRANSACTION_TYPES)[number]
@@ -29,8 +35,9 @@ const defaultValues: TransactionFormValues = {
   type: TRANSACTION_TYPES[0]
 }
 
-const AddTransactionButton = () => {
+const AddTransactionButton = ({ accountId }: AddTransactionButtonProps) => {
   const [isOpen, setIsOpen] = useState(false)
+  const router = useRouter()
 
   const form = useForm({
     defaultValues,
@@ -38,7 +45,18 @@ const AddTransactionButton = () => {
       onSubmit: transactionSchema
     },
     onSubmit: async ({ value }) => {
-      alert(JSON.stringify(value, null, 2))
+      if (!accountId) return
+
+      await addTransactionFn({
+        data: {
+          ...value,
+          description: value.description ?? '',
+          accountId,
+        },
+      })
+      form.reset()
+      setIsOpen(false)
+      router.invalidate()
     }
   })
 
