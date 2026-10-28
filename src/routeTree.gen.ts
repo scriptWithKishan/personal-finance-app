@@ -15,7 +15,8 @@ import { Route as AuthLoginRouteImport } from './routes/_auth/login'
 import { Route as AuthSignupRouteImport } from './routes/_auth/signup'
 import { Route as ProtectedIndexRouteImport } from './routes/_protected/index'
 import { Route as ProtectedAboutRouteImport } from './routes/_protected/about'
-import { Route as ProtectedAAccIdRouteImport } from './routes/_protected/a/$accId'
+import { Route as ProtectedAAccIdIndexRouteImport } from './routes/_protected/a/$accId/index'
+import { Route as ProtectedAAccIdTTransactionIdRouteImport } from './routes/_protected/a/$accId/t/$transactionId'
 
 const AuthRouteRoute = AuthRouteRouteImport.update({
   id: '/_auth',
@@ -45,25 +46,33 @@ const ProtectedAboutRoute = ProtectedAboutRouteImport.update({
   path: '/about',
   getParentRoute: () => ProtectedRouteRoute,
 } as any)
-const ProtectedAAccIdRoute = ProtectedAAccIdRouteImport.update({
-  id: '/a/$accId',
-  path: '/a/$accId',
+const ProtectedAAccIdIndexRoute = ProtectedAAccIdIndexRouteImport.update({
+  id: '/a/$accId/',
+  path: '/a/$accId/',
   getParentRoute: () => ProtectedRouteRoute,
 } as any)
+const ProtectedAAccIdTTransactionIdRoute =
+  ProtectedAAccIdTTransactionIdRouteImport.update({
+    id: '/a/$accId/t/$transactionId',
+    path: '/a/$accId/t/$transactionId',
+    getParentRoute: () => ProtectedRouteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof ProtectedIndexRoute
   '/login': typeof AuthLoginRoute
   '/signup': typeof AuthSignupRoute
   '/about': typeof ProtectedAboutRoute
-  '/a/$accId': typeof ProtectedAAccIdRoute
+  '/a/$accId/': typeof ProtectedAAccIdIndexRoute
+  '/a/$accId/t/$transactionId': typeof ProtectedAAccIdTTransactionIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof ProtectedIndexRoute
   '/login': typeof AuthLoginRoute
   '/signup': typeof AuthSignupRoute
   '/about': typeof ProtectedAboutRoute
-  '/a/$accId': typeof ProtectedAAccIdRoute
+  '/a/$accId': typeof ProtectedAAccIdIndexRoute
+  '/a/$accId/t/$transactionId': typeof ProtectedAAccIdTTransactionIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -73,13 +82,26 @@ export interface FileRoutesById {
   '/_auth/signup': typeof AuthSignupRoute
   '/_protected/about': typeof ProtectedAboutRoute
   '/_protected/': typeof ProtectedIndexRoute
-  '/_protected/a/$accId': typeof ProtectedAAccIdRoute
+  '/_protected/a/$accId/': typeof ProtectedAAccIdIndexRoute
+  '/_protected/a/$accId/t/$transactionId': typeof ProtectedAAccIdTTransactionIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/login' | '/signup' | '/about' | '/a/$accId'
+  fullPaths:
+    | '/'
+    | '/login'
+    | '/signup'
+    | '/about'
+    | '/a/$accId/'
+    | '/a/$accId/t/$transactionId'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/login' | '/signup' | '/about' | '/a/$accId'
+  to:
+    | '/'
+    | '/login'
+    | '/signup'
+    | '/about'
+    | '/a/$accId'
+    | '/a/$accId/t/$transactionId'
   id:
     | '__root__'
     | '/_auth'
@@ -88,7 +110,8 @@ export interface FileRouteTypes {
     | '/_auth/signup'
     | '/_protected/about'
     | '/_protected/'
-    | '/_protected/a/$accId'
+    | '/_protected/a/$accId/'
+    | '/_protected/a/$accId/t/$transactionId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -140,11 +163,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProtectedAboutRouteImport
       parentRoute: typeof ProtectedRouteRoute
     }
-    '/_protected/a/$accId': {
-      id: '/_protected/a/$accId'
+    '/_protected/a/$accId/': {
+      id: '/_protected/a/$accId/'
       path: '/a/$accId'
-      fullPath: '/a/$accId'
-      preLoaderRoute: typeof ProtectedAAccIdRouteImport
+      fullPath: '/a/$accId/'
+      preLoaderRoute: typeof ProtectedAAccIdIndexRouteImport
+      parentRoute: typeof ProtectedRouteRoute
+    }
+    '/_protected/a/$accId/t/$transactionId': {
+      id: '/_protected/a/$accId/t/$transactionId'
+      path: '/a/$accId/t/$transactionId'
+      fullPath: '/a/$accId/t/$transactionId'
+      preLoaderRoute: typeof ProtectedAAccIdTTransactionIdRouteImport
       parentRoute: typeof ProtectedRouteRoute
     }
   }
@@ -167,13 +197,15 @@ const AuthRouteRouteWithChildren = AuthRouteRoute._addFileChildren(
 interface ProtectedRouteRouteChildren {
   ProtectedAboutRoute: typeof ProtectedAboutRoute
   ProtectedIndexRoute: typeof ProtectedIndexRoute
-  ProtectedAAccIdRoute: typeof ProtectedAAccIdRoute
+  ProtectedAAccIdIndexRoute: typeof ProtectedAAccIdIndexRoute
+  ProtectedAAccIdTTransactionIdRoute: typeof ProtectedAAccIdTTransactionIdRoute
 }
 
 const ProtectedRouteRouteChildren: ProtectedRouteRouteChildren = {
   ProtectedAboutRoute: ProtectedAboutRoute,
   ProtectedIndexRoute: ProtectedIndexRoute,
-  ProtectedAAccIdRoute: ProtectedAAccIdRoute,
+  ProtectedAAccIdIndexRoute: ProtectedAAccIdIndexRoute,
+  ProtectedAAccIdTTransactionIdRoute: ProtectedAAccIdTTransactionIdRoute,
 }
 
 const ProtectedRouteRouteWithChildren = ProtectedRouteRoute._addFileChildren(

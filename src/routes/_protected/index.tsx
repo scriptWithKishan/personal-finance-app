@@ -41,10 +41,12 @@ function Home() {
                   <Button
                     onClick={(e) => {
                       e.stopPropagation();
+                      e.preventDefault();
                       handleDelete(account.id);
                     }}
                     size={'icon-sm'}
                     variant={'ghost'}
+                    className="text-muted-foreground hover:text-destructive hover:bg-destructive/10"
                   >
                     <Trash />
                   </Button>
